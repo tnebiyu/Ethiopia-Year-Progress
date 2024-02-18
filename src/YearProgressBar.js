@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./ProgressBar.css";
+function nextYearFromNow() {
+  const start = new Date();
 
+  start.setFullYear(start.getFullYear() + 1);
+
+  return start.getFullYear();
+}
 const YearProgressBar = () => {
   const [progress, setProgress] = useState(0);
   const [countdown, setCountdown] = useState({
+    monthsLeft: 0,
     days: 0,
     hours: 0,
     minutes: 0,
@@ -22,20 +29,25 @@ const YearProgressBar = () => {
     };
 
     calculateProgress();
-
     const calculateCountdown = () => {
       const now = new Date();
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      const remainingTime = endOfMonth - now;
+      const nextYear = nextYearFromNow();
+      const endTime = new Date(nextYear, 0, 1, 0, 0).getTime();
+      const remainingTime = endTime - now.getTime();
+
+      const seconds = Math.floor((remainingTime / 1000) % 60);
+      const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+      const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+      const months = 11 - now.getMonth();
       const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor(
-        (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-      setCountdown({ days, hours, minutes, seconds });
+
+      setCountdown({
+        months: months,
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+      });
     };
 
     calculateCountdown();
@@ -50,10 +62,11 @@ const YearProgressBar = () => {
   return (
     <div className="progress-wrapper">
       <div className="countdown">
-        <span>{countdown.days}d</span>
-        <span>{countdown.hours}h</span>
-        <span>{countdown.minutes}m</span>
-        <span>{countdown.seconds}s</span>
+        <span>{countdown.months} months,</span>
+        <span>{countdown.days} days,</span>
+        <span>{countdown.hours} hours,</span>
+        <span>{countdown.minutes} minutes,</span>
+        <span>{countdown.seconds} seconds</span>
         <span>left</span>
       </div>
       <div className="progress-year">{new Date().getFullYear()}</div>
