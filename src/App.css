@@ -1,6 +1,10 @@
 .App {
   text-align: center;
 }
+.yearTitle {
+  text-align: center;
+  font-size: 20px;
+}
 
 .App-logo {
   height: 40vmin;
