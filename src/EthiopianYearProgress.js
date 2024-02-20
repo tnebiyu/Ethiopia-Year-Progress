@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./EthiopianYearProgress.css";
+import { EtDatetime, ETC } from "abushakir";
+function ThisYear() {
+  const start = new Date();
 
-function gregorianToEthiopian(year, month, day) {
-  const ethiopianYear = year + 8;
-  const ethiopianMonth = month < 9 ? month + 4 : month - 8;
-  const ethiopianDay = day;
-  return { ethiopianYear, ethiopianMonth, ethiopianDay };
+  start.setFullYear(start.getFullYear());
+
+  return start.getFullYear();
 }
-
-function endOfEthiopianYear(ethiopianYear) {
-  const endOfYear = new Date(ethiopianYear + 1, 0, 1);
-  endOfYear.setDate(endOfYear.getDate() - 1);
-  return endOfYear;
-}
-
-const nextEthiopianYearFromNow = () => {};
 
 const EthiopianYearProgress = () => {
   const [progress, setProgress] = useState(0);
@@ -28,50 +21,34 @@ const EthiopianYearProgress = () => {
 
   useEffect(() => {
     const calculateProgress = () => {
-      const now = new Date();
-      const ethiopianDate = gregorianToEthiopian(
-        now.getFullYear(),
-        now.getMonth() + 1,
-        now.getDate()
-      );
-      const startOfYearEthiopian = new Date(ethiopianDate.ethiopianYear, 0, 1);
-      const endOfYearEthiopian = endOfEthiopianYear(
-        ethiopianDate.ethiopianYear
-      );
-      const totalMilliseconds = endOfYearEthiopian - startOfYearEthiopian;
-      const currentMilliseconds = now - startOfYearEthiopian;
+      const currentDate = new Date();
+      const startOfYear = new Date(currentDate.getFullYear() - 1, 8, 11);
+      const endOfYear = new Date(currentDate.getFullYear(), 8, 11);
+      const totalMilliseconds = endOfYear - startOfYear;
+      const currentMilliseconds = currentDate - startOfYear;
       const currentProgress = (currentMilliseconds / totalMilliseconds) * 100;
       setProgress(currentProgress);
     };
 
     const calculateCountdown = () => {
-      const now = new Date();
-      const nextEthiopianYear = nextEthiopianYearFromNow();
-      const endTime = endOfEthiopianYear(nextEthiopianYear).getTime();
-      const remainingTime = endTime - now.getTime();
+      const now = new EtDatetime();
+      const thiYear = ThisYear();
+      const endTime = new Date(thiYear, 8, 11, 0, 0).getTime();
+      const gregorianNow = new Date(now.moment);
+      const remainingTime = endTime - gregorianNow.getTime();
 
-      let totalSeconds = Math.floor(remainingTime / 1000);
-
-      const monthsLeft = Math.floor(totalSeconds / (30 * 24 * 60 * 60));
-      totalSeconds -= monthsLeft * (30 * 24 * 60 * 60);
-
-      const daysLeft = Math.floor(totalSeconds / (24 * 60 * 60));
-      totalSeconds -= daysLeft * (24 * 60 * 60);
-
-      const hoursLeft = Math.floor(totalSeconds / (60 * 60));
-      totalSeconds -= hoursLeft * (60 * 60);
-
-      const minutesLeft = Math.floor(totalSeconds / 60);
-      totalSeconds -= minutesLeft * 60;
-
-      const secondsLeft = totalSeconds;
+      const seconds = Math.floor((remainingTime / 1000) % 60);
+      const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+      const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+      const months = now.month;
+      const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
 
       setCountdown({
-        months: monthsLeft,
-        days: daysLeft,
-        hours: hoursLeft,
-        minutes: minutesLeft,
-        seconds: secondsLeft,
+        months: months,
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
       });
     };
 
@@ -95,7 +72,7 @@ const EthiopianYearProgress = () => {
         <span>{countdown.seconds} seconds</span>
         <span>left</span>
       </div>
-      <div className="progress-year">{nextEthiopianYearFromNow()}</div>
+      <div className="progress-year">{new EtDatetime().year}</div>
       <div className="progress-bar-container">
         <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         <div className="progress-text">{progress.toFixed(2)}%</div>
