@@ -15,3 +15,5 @@ A year progress of the Ethiopian calendar and Gregorian calendar.
 ## Hosting
 
 - Vercel
+
+![Image](https://github.com/tnebiyu/Ethiopia-Year-Progress/blob/main/public/projectimage.png)
