@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./EthiopianYearProgress.css";
-import { EtDatetime, ETC } from "abushakir";
+import { EtDatetime } from "abushakir";
 function ThisYear() {
   const start = new Date();
 

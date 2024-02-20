@@ -49,3 +49,15 @@ body {
     transform: rotate(360deg);
   }
 }
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons a {
+  margin: 0 10px;
+  target: "_blank";
+}
+footer {
+  margin-top: auto;
+}
