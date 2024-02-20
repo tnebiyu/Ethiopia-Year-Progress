@@ -7,6 +7,7 @@ import EthiopianYearProgress from "./EthiopianYearProgress";
 const App = () => {
   return (
     <div>
+      <span className="Spacer"></span>
       <h1 className="YearTitle">Gregorian Calendar</h1>
       <YearProgressBar />
       <div className="Spacer"></div>

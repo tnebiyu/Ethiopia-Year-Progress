@@ -32,6 +32,9 @@ const EthiopianYearProgress = () => {
 
     const calculateCountdown = () => {
       const now = new EtDatetime();
+      const month = now.month;
+      const endOfMonth = new Date(now.year, month + 1, 0);
+
       const thiYear = ThisYear();
       const endTime = new Date(thiYear, 8, 11, 0, 0).getTime();
       const gregorianNow = new Date(now.moment);

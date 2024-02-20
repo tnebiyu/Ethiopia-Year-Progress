@@ -35,11 +35,14 @@ const YearProgressBar = () => {
       const endTime = new Date(nextYear, 0, 1, 0, 0).getTime();
       const remainingTime = endTime - now.getTime();
 
+      const month = now.getMonth();
+      const endOfMonth = new Date(now.getFullYear(), month + 1, 0);
+      const remainingMonthTime = endOfMonth - now.getTime();
       const seconds = Math.floor((remainingTime / 1000) % 60);
       const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
       const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
       const months = 11 - now.getMonth();
-      const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      const days = Math.floor(remainingMonthTime / (1000 * 60 * 60 * 24));
 
       setCountdown({
         months: months,
